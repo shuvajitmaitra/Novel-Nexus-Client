@@ -6,15 +6,15 @@ import {FcLibrary} from "react-icons/fc"
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
-  console.log(user.displayName);
+  console.log(user?.displayName);
 
   const userProfile = (
     <div className="  flex flex-col lg:flex-row items-center justify-center gap-3 pr-2 lg:bg-primary lg:bg-opacity-50 rounded-full">
       <img
-        src={user.photoURL}
+        src={user?.photoURL}
         className="w-12 h-12 object-cover border-4 border-white rounded-full"
       />
-      <h2 className="text-lg lg:text-white font-medium">{user.displayName}</h2>
+      <h2 className="text-lg lg:text-white font-medium">{user?.displayName}</h2>
     </div>
   );
   const navLink = (
@@ -69,8 +69,6 @@ const Navbar = () => {
               <div className="navbar-end hidden lg:flex ">{userProfile}</div>
           </Container>
         </div>
-        {/* Page content here */}
-        Content
       </div>
       <div className="drawer-side">
         <label
