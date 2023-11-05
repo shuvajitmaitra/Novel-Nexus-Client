@@ -2,10 +2,12 @@ import { NavLink } from "react-router-dom";
 import Container from "./Container";
 import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
-import {FcLibrary} from "react-icons/fc"
+import { FcLibrary } from "react-icons/fc";
+import { auth } from "../Firebase/firebase.config";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   console.log(user?.displayName);
 
   const userProfile = (
@@ -14,16 +16,60 @@ const Navbar = () => {
         src={user?.photoURL}
         className="w-12 h-12 object-cover border-4 border-white rounded-full"
       />
-      <h2 className="text-lg lg:text-white font-medium">{user?.displayName}</h2>
+      <h2 className=" lg:text-white font-medium pb-2">{user?.displayName}</h2>
     </div>
   );
+
+  const handleSignOut = () => {
+    logOut(auth)
+      .then(() => {
+        toast.success("User Sign Out!");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   const navLink = (
     <>
       <li>
-        <NavLink to={"/"}>Home</NavLink>
+        <NavLink
+          to={"/"}
+          className={({ isActive }) =>
+            isActive ? "btn btn-primary btn-sm " : "btn btn-ghost btn-sm"
+          }
+        >
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink to={"/login"}>Sign In</NavLink>
+        <NavLink
+          to={"/add-book"}
+          className={({ isActive }) =>
+            isActive ? "btn btn-primary btn-sm" : "btn btn-ghost btn-sm"
+          }
+        >
+          Add Book
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={"/all-book"}
+          className={({ isActive }) =>
+            isActive ? "btn btn-primary btn-sm" : "btn btn-ghost btn-sm"
+          }
+        >
+          All Book
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={"/borrowed-book"}
+          className={({ isActive }) =>
+            isActive ? "btn btn-primary btn-sm" : "btn btn-ghost btn-sm"
+          }
+        >
+          Borrowed Book
+        </NavLink>
       </li>
     </>
   );
@@ -36,8 +82,11 @@ const Navbar = () => {
       />
       <div className="drawer-content flex flex-col">
         {/* Navbar */}
-        <div className="w-full navbar bg-accent bg-opacity-20">
-          <Container>
+        <div className="bg-accent bg-opacity-20">
+          <Container className="flex justify-start lg:justify-between items-center py-3">
+            {/* ------------------------------------------------ */}
+            {/* For Mobile screen */}
+            {/* ------------------------------------------------ */}
             <div className="flex-none lg:hidden">
               <label
                 htmlFor="my-drawer-3"
@@ -59,26 +108,100 @@ const Navbar = () => {
                 </svg>
               </label>
             </div>
-            <div className="navbar-start  px-2 mx-2 flex items-center gap-2 text-lg md:text-2xl font-medium text-primary text-opacity-50"><FcLibrary className=" text-xl lg:text-3xl"/>Novel Nexus</div>
-            <div className=" hidden lg:flex items-center gap-20">
-              <ul className="navbar-center  menu menu-horizontal">
+            {/* ------------------------------------------------ */}
+            {/* For Logo */}
+            {/* ------------------------------------------------ */}
+            <div className="border px-2 mx-2 flex items-center gap-2 text-lg md:text-2xl font-medium text-primary text-opacity-50">
+              <FcLibrary className=" text-xl lg:text-3xl" />
+              Novel Nexus
+            </div>
+
+            {/* ------------------------------------------------ */}
+            {/* For Full screen */}
+            {/* ------------------------------------------------ */}
+            <div className=" hidden border lg:flex items-center gap-20">
+              <ul className="navbar-center menu-horizontal">
                 {/* Navbar menu content here */}
                 {navLink}
               </ul>
             </div>
-              <div className="navbar-end hidden lg:flex ">{userProfile}</div>
+            <div className=" hidden lg:flex ">
+              <div className=" drawer-end">
+                <input
+                  id="my-drawer-4"
+                  type="checkbox"
+                  className="drawer-toggle w-fit"
+                />
+                <div className="drawer-content ">
+                  {/* Page content here */}
+                  <label
+                    htmlFor="my-drawer-4"
+                    className="drawer-button"
+                  >
+                    {user ? (
+                      <span>{userProfile}</span>
+                    ) : (
+                      <ul className="btn bg-primary btn-sm w-ful my-3 text-white">
+                        {/* Navbar menu content here */}
+                        <li>
+                          <NavLink to={"/login"}>Sign In</NavLink>
+                        </li>
+                      </ul>
+                    )}
+                  </label>
+                </div>
+                {/* ------------------------------------------------ */}
+                {/* For Full screen drawer slider.........*/}
+                {/* ------------------------------------------------ */}
+                {user && (
+                  <div className="drawer-side z-10">
+                    <label
+                      htmlFor="my-drawer-4"
+                      aria-label="close sidebar"
+                      className="drawer-overlay"
+                    ></label>
+                    <div className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+                      <button
+                        onClick={handleSignOut}
+                        className="bg-error py-2  hover:bg-opacity-50 text-white font-medium text-center"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {/* ------------------------------------------------ */}
+                {/* For Full screen drawer slider end */}
+                {/* ------------------------------------------------ */}
+              </div>
+            </div>
           </Container>
         </div>
       </div>
-      <div className="drawer-side">
+      <div className="drawer-side z-10">
         <label
           htmlFor="my-drawer-3"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu p-4 w-1/2 md:w-1/3  min-h-full bg-base-200">
-          <div className="">{userProfile}</div>
-          {/* Sidebar content here */}
+        <ul className=" p-4 w-1/2 md:w-1/3 flex flex-col items-center   min-h-full bg-base-200 ">
+          {user ? (
+            <>
+              <div className="">{userProfile}</div>
+              <button
+                onClick={handleSignOut}
+                className="btn btn-sm bg-error w-full my-3 hover:bg-opacity-50 text-white font-medium text-center"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <ul className="btn bg-primary btn-sm w-ful my-3 text-white w-full">
+              <li>
+                <NavLink to={"/login"}>Sign In</NavLink>
+              </li>
+            </ul>
+          )}
           {navLink}
         </ul>
       </div>

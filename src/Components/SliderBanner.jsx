@@ -13,6 +13,7 @@ const SliderBanner = () => {
     <div>
       <Swiper
         modules={[Navigation, A11y]}
+        loop={true}
         spaceBetween={50}
         slidesPerView={1}
       >

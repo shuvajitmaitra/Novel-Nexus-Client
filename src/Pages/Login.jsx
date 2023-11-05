@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../Components/Container";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
@@ -9,12 +9,15 @@ import toast from "react-hot-toast";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const {userSignIn,googleSignIn} = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const onSubmit = (data) => {
     console.log(data);
     userSignIn(data.email, data.password)
     .then(()=>{
         toast.success("Sign In Successfully")
+       reset()
+        navigate(location.state ? location.state : "/");
     })
     .catch((error)=>{
         toast.error(error.message)
@@ -25,6 +28,7 @@ const Login = () => {
     googleSignIn()
     .then(()=>{
       toast.success("Sign In Successfully")
+      navigate(location.state ? location.state : "/");
     })
     .catch((error)=>{
       toast.error(error.message)
@@ -66,7 +70,7 @@ const Login = () => {
           />
         </div>
         <div className="form-control mt-6">
-          <button  onClick={() => reset()} type="submit" className="btn btn-primary">Login</button>
+          <button  type="submit" className="btn btn-primary">Login</button>
         </div>
         <div className="font-medium">
           <h3>
