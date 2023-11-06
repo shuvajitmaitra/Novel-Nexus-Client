@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
 import Container from "./Container";
 
@@ -37,22 +37,19 @@ const [books, setBooks] = useState([]);
                       <p className=" text-gray-500">Author: {book.author_name}</p>
                      <div className="flex justify-between items-center ">
                      <p className="text-base text-gray-500">Category: {book.category}</p>
-                        <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={book.book_rating}></StarRating></p>
+                     <p className="text-base text-gray-500">Quantity: {book.book_quantity}</p>
                      </div>
+                        <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={book.book_rating}></StarRating> ({book.book_rating})</p>
        
                          <div className="flex-grow"></div>
                     
-                      <div className=" flex justify-center gap-3">
-                        <button className="bg-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
-                          Borrow
-                        </button>
+                     
+                         <Link to={`/bookDetails/${book._id}`}>
                         <button className="bg-primary hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
-                          Read More
+                          View Details
                         </button>
-                      </div>
-                    </div>
-            
-            
+                        </Link>
+                      </div>   
               )
           }
       </div>

@@ -8,6 +8,7 @@ import AllBook from "../Components/AllBook";
 import BorrowedBook from "../Components/BorrowedBook";
 import PrivateRoute from "../Components/PrivateRoute";
 import CategoriseBooks from "../Components/CategoriseBooks";
+import BookDetails from "../Components/BookDetails";
 
 const Routes = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const Routes = createBrowserRouter([
       {
         path: "/categorized-book/:book_category",
         element: <PrivateRoute><CategoriseBooks></CategoriseBooks></PrivateRoute>,
+      },
+      {
+        path: "/bookDetails/:id",
+        element: <PrivateRoute><BookDetails></BookDetails></PrivateRoute>,
       },
       {
         path: "/login",

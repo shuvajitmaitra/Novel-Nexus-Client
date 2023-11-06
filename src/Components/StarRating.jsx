@@ -15,9 +15,9 @@ const StarRating = ({rating}) => {
     })
 
     return (
-        <wrapper className="flex">
+        <span className="flex">
             {ratingFunc}
-        </wrapper>
+        </span>
     );
 };
 

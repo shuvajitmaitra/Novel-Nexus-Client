@@ -36,7 +36,7 @@ const AllBook = () => {
                             <p className=" text-gray-500">Author: {book.author_name}</p>
                            <div className="flex justify-between items-center ">
                            <p className="text-base text-gray-500">Category: {book.category}</p>
-                              <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={book.book_rating}></StarRating></p>
+                              <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={book.book_rating}></StarRating> ({book.book_rating})</p>
                            </div>
              
              <div className="flex-grow"></div>
