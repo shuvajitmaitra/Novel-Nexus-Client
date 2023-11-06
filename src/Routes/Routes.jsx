@@ -6,6 +6,7 @@ import Register from "../Pages/Register";
 import AddBook from "../Components/AddBook";
 import AllBook from "../Components/AllBook";
 import BorrowedBook from "../Components/BorrowedBook";
+import PrivateRoute from "../Components/PrivateRoute";
 
 const Routes = createBrowserRouter([
   {
@@ -18,26 +19,27 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/add-book",
-        element: <AddBook></AddBook>,
+        element: <PrivateRoute><AddBook></AddBook></PrivateRoute>,
       },
       {
         path: "/all-book",
-        element: <AllBook></AllBook>,
+        element:<PrivateRoute><AllBook></AllBook></PrivateRoute> ,
       },
       {
         path: "/borrowed-book",
-        element: <BorrowedBook></BorrowedBook>,
+        element: <PrivateRoute><BorrowedBook></BorrowedBook></PrivateRoute>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
       },
     ],
   },
-  {
-    path: "/login",
-    element: <Login></Login>,
-  },
-  {
-    path: "/register",
-    element: <Register></Register>,
-  },
+  
 ]);
 
 export default Routes;

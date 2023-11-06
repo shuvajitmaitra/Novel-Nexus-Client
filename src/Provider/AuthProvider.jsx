@@ -1,9 +1,15 @@
-import { GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { PropTypes } from "prop-types";
 import { auth } from "../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 // import axios from "axios";
-
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -37,7 +43,7 @@ const AuthProvider = ({ children }) => {
 
   // onAuthStateChanged.......
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       // const userEmail = currentUser?.email || user?.email;
       setUser(currentUser);
       // const loggedUser = {email: userEmail}
@@ -54,6 +60,10 @@ const AuthProvider = ({ children }) => {
       //   })
       // }
       setLoading(false);
+
+      return () => {
+        return unSubscribe();
+      };
     });
   }, [user]);
 
@@ -70,8 +80,7 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-
 AuthProvider.propTypes = {
-  children: PropTypes.node
-}
+  children: PropTypes.node,
+};
 export default AuthProvider;
