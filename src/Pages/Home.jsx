@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Container from "../Components/Container";
 import SliderBanner from "../Components/SliderBanner";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -31,18 +32,18 @@ const Home = () => {
         {categories.map((category) => (
           <div
             key={category._id}
-            className="p-4 border rounded bg-primary bg-opacity-20 space-y-4 text-center"
+            className="flex flex-col bg-gradient-to-r  from-blue-200 to-blue-300 text-gray-800 p-8 rounded shadow-lg hover:shadow-md transform hover:scale-105 transition-transform space-y-5"
           >
             <img
               src={category.image}
               className="h-40 object-cover bg-zinc-300 rounded"
             />
-            <h2 className="text-3xl font-bold text-accent">
+            <h2 className="text-3xl font-bold text-center text-accent">
               {category.category}
             </h2>
-            <button className="py-2 rounded-full w-full btn-primary font-medium">
+           <Link to={`categorized-book/${category.category}`}> <button className="py-2 rounded-full w-full bg-primary font-medium hover:bg-blue-600 text-white focus:outline-none transition-transform hover:scale-105">
               View
-            </button>
+            </button></Link>
           </div>
         ))}
       </Container>

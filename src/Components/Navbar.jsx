@@ -11,12 +11,12 @@ const Navbar = () => {
   console.log(user?.displayName);
 
   const userProfile = (
-    <div className="  flex flex-col lg:flex-row items-center justify-center gap-3 pr-2 lg:bg-primary lg:bg-opacity-50 rounded-full">
+    <div className="  flex flex-col lg:flex-row items-center justify-center gap-3 pr-3 lg:bg-primary lg:bg-opacity-50 rounded-full">
       <img
         src={user?.photoURL}
         className="w-12 h-12 object-cover border-4 border-white rounded-full"
       />
-      <h2 className=" lg:text-white font-medium pb-2">{user?.displayName}</h2>
+      <h2 className=" lg:text-white font-medium">{user?.displayName}</h2>
     </div>
   );
 
@@ -41,7 +41,9 @@ const Navbar = () => {
           Home
         </NavLink>
       </li>
-      <li>
+     {
+      user && <>
+       <li>
         <NavLink
           to={"/add-book"}
           className={({ isActive }) =>
@@ -71,6 +73,8 @@ const Navbar = () => {
           Borrowed Book
         </NavLink>
       </li>
+      </>
+     }
     </>
   );
   return (
@@ -111,7 +115,7 @@ const Navbar = () => {
             {/* ------------------------------------------------ */}
             {/* For Logo */}
             {/* ------------------------------------------------ */}
-            <div className="border px-2 mx-2 flex items-center gap-2 text-lg md:text-2xl font-medium text-primary text-opacity-50">
+            <div className=" px-2 mx-2 flex items-center gap-2 text-lg md:text-2xl font-medium text-primary text-opacity-50">
               <FcLibrary className=" text-xl lg:text-3xl" />
               Novel Nexus
             </div>
@@ -119,8 +123,8 @@ const Navbar = () => {
             {/* ------------------------------------------------ */}
             {/* For Full screen */}
             {/* ------------------------------------------------ */}
-            <div className=" hidden border lg:flex items-center gap-20">
-              <ul className="navbar-center menu-horizontal">
+            <div className=" hidden  lg:flex items-center gap-20">
+              <ul className="navbar-center menu-horizontal gap-3">
                 {/* Navbar menu content here */}
                 {navLink}
               </ul>

@@ -43,10 +43,10 @@ const AllBook = () => {
                           
                             <div className=" flex justify-center gap-3">
                               <button className="bg-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
-                                Borrow
+                                Update
                               </button>
-                              <button className="bg-primary hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
-                                Read More
+                              <button className="bg-error hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
+                                Delete
                               </button>
                             </div>
                           </div>

@@ -7,6 +7,7 @@ import AddBook from "../Components/AddBook";
 import AllBook from "../Components/AllBook";
 import BorrowedBook from "../Components/BorrowedBook";
 import PrivateRoute from "../Components/PrivateRoute";
+import CategoriseBooks from "../Components/CategoriseBooks";
 
 const Routes = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const Routes = createBrowserRouter([
       {
         path: "/borrowed-book",
         element: <PrivateRoute><BorrowedBook></BorrowedBook></PrivateRoute>,
+      },
+      {
+        path: "/categorized-book/:book_category",
+        element: <PrivateRoute><CategoriseBooks></CategoriseBooks></PrivateRoute>,
       },
       {
         path: "/login",
