@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
 import Container from "./Container";
 import ReactModal from "react-modal";
@@ -302,9 +302,11 @@ const BookDetails = () => {
           {/* ------------------------------ */}
           {/* Modal */}
           {/* ------------------------------ */}
-          <button className="btn btn-error hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
+        <Link to={`/book-story/${id}`}> 
+           <button className="btn btn-error hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
             Read More
           </button>
+          </Link>
         </div>
       </div>
     </Container>
