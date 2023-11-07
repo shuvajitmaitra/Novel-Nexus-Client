@@ -1,8 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Container from "../Components/Container";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { auth } from "../Firebase/firebase.config";
@@ -10,9 +10,18 @@ import { updateProfile } from "firebase/auth";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
+  const location = useLocation();
   const navigate = useNavigate();
+ const [error, setError] = useState('');
   const { createUser, logOut, googleSignIn } = useContext(AuthContext);
   const onSubmit = (data) => {
+    const regExp =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&`#^(){}.])[0-9a-zA-Z@$!%*?&`#^(){}.]{6,}$/;
+
+    if (!regExp.test(data.password)) {
+      return setError("Invalid password");
+    }
+    setError("");
     createUser(data.email, data.password)
       .then(() => {
       
@@ -43,6 +52,7 @@ const Register = () => {
     googleSignIn()
     .then(()=>{
       toast.success("Sign In Successfully")
+      navigate(location.state ? location.state : "/");
     })
     .catch((error)=>{
       toast.error(error.message)
@@ -109,6 +119,7 @@ const Register = () => {
             required
           />
         </div>
+        <p className="text-red-400">{error}</p>
         <div className="form-control mt-6">
           <button
             type="submit"

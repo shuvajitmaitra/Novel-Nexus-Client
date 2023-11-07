@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
 import Container from "./Container";
@@ -7,9 +7,7 @@ import ReactModal from "react-modal";
 import { AuthContext } from "../Provider/AuthProvider";
 import { MdClose } from "react-icons/md";
 import toast from "react-hot-toast";
-
-
-
+import { useQuery } from "@tanstack/react-query";
 
 {
   /* ------------------------------ */
@@ -44,23 +42,42 @@ const customStyles = {
 const BookDetails = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const [book, setBook] = useState([]);
-  const {
-      book_name,
-      image,
-      author_name,
-      category,
-      book_rating,
-      short_description,
-      book_quantity,
-    } = book;
- 
-  useEffect(() => {
-    axios.get(`http://localhost:5000/books/${id}`).then((res) => {
-      setBook(res.data);
-    });
-  }, [id]);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
+  
+  const {
+    data: book,
+    isLoading,
+    refetch,
+    isError,
+  } = useQuery({
+    queryKey: ["book"],
+    queryFn: async () =>
+      await axios.get(`http://localhost:5000/books/${id}`).then((res) => {
+        return res.data;
+      }),
+  });
+
+  if (isLoading) {
+    return (
+      <span className="h-screen flex justify-center items-center">
+        <progress className="progress w-56"></progress>
+      </span>
+    );
+  }
+
+  if (isError) {
+    return <h2>Error</h2>;
+  }
+  const {
+    book_name,
+    image,
+    author_name,
+    category,
+    book_rating,
+    short_description,
+    book_quantity,
+  } = book;
   {
     /* ------------------------------ */
   }
@@ -71,16 +88,12 @@ const BookDetails = () => {
     /* ------------------------------ */
   }
   //   let subtitle;
-  const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = '#f00';
-  }
+ 
 
   function closeModal() {
     setIsOpen(false);
@@ -97,63 +110,59 @@ const BookDetails = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
-    const return_date = e.target.return_date.value
+    const return_date = e.target.return_date.value;
     const today = new Date();
 
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const borrowed_date = new Intl.DateTimeFormat('en-US', options).format(today);
-   
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const borrowed_date = new Intl.DateTimeFormat("en-US", options).format(
+      today
+    );
+
     if (book_quantity) {
       const newQuantity = book_quantity - 1;
 
       axios
-      .post("http://localhost:5000/borrowed", {
-        email: user.email,
-        objectId: id,
-        return_date,
-        borrowed_date,
-        book_name,
-        image,
-        author_name,
-        category,
-        book_rating,
-        short_description,
-        book_quantity: newQuantity,
-      })
-      .then((res) => {
-        if(!res.data.insertedId){
-            toast.error("You already Borrowed");
-        }
-        if (res.data.insertedId) {
-        axios
-        .put(`http://localhost:5000/books/${id}`, {
+        .post("http://localhost:5000/borrowed", {
+          email: user.email,
+          objectId: id,
+          return_date,
+          borrowed_date,
+          book_name,
+          image,
+          author_name,
+          category,
+          book_rating,
+          short_description,
           book_quantity: newQuantity,
         })
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.modifiedCount > 0) {
-            toast.success("Successfully Borrowed");
-            closeModal();
-                axios.get(`http://localhost:5000/books/${id}`).then((res) => {
-                  setBook(res.data);
-                });
-
+        .then((res) => {
+          if (!res.data.insertedId) {
+            toast.error("You already Borrowed");
+          }
+          if (res.data.insertedId) {
+            axios
+              .put(`http://localhost:5000/books/${id}`, {
+                book_quantity: newQuantity,
+              })
+              .then((response) => {
+                console.log(response.data);
+                if (response.data.modifiedCount > 0) {
+                  toast.success("Successfully Borrowed");
+                  refetch()
+                  closeModal();
+                }
+              })
+              .catch((error) => {
+                {
+                  error && console.log(error);
+                  toast.error("Something wrong try again later");
+                }
+              });
           }
         })
         .catch((error) => {
-           {
-            error && console.log(error);
-            toast.error("Something wrong try again later");
-           }
+          toast.error(error);
         });
-        }
-      })
-      .catch((error) => {
-        toast.error(error);
-        
-      });
-
-      
     }
   };
 
@@ -187,10 +196,16 @@ const BookDetails = () => {
             <h2 className="text-accent font-medium text-lg underline">
               Book Quantity:
             </h2>
-            {
-              book_quantity ? <span className={`text-secondary no-underline`}>{book_quantity}</span> 
-                            : <span className="bg-red-500 rounded-full px-2 my-2 text-white"> Not Available</span>
-            }
+            {book_quantity ? (
+              <span className={`text-secondary no-underline`}>
+                {book_quantity}
+              </span>
+            ) : (
+              <span className="bg-red-500 rounded-full px-2 my-2 text-white">
+                {" "}
+                Not Available
+              </span>
+            )}
           </div>
           <div className="flex flex-col lg:flex-row  lg:gap-4 items-start lg:items-center">
             <h2 className="text-accent font-medium text-lg underline">
@@ -206,7 +221,8 @@ const BookDetails = () => {
           </h2>
           <p className=" flex items-center text-base gap-3">
             {" "}
-            <StarRating rating={parseFloat(book_rating)}></StarRating> ({book_rating})
+            <StarRating rating={parseFloat(book_rating)}></StarRating> (
+            {book_rating})
           </p>
         </div>
         <div>
@@ -219,7 +235,9 @@ const BookDetails = () => {
         <div className=" flex justify-center gap-3">
           <button
             onClick={openModal}
-            className={`btn btn-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105 &&  ${book_quantity < 1 &&  "btn-disabled" }`}
+            className={`btn btn-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105 &&  ${
+              book_quantity < 1 && "btn-disabled"
+            }`}
           >
             Borrow
           </button>
@@ -229,7 +247,6 @@ const BookDetails = () => {
           <div className="relative ">
             <ReactModal
               isOpen={modalIsOpen}
-              onAfterOpen={afterOpenModal}
               onRequestClose={closeModal}
               style={customStyles}
               id="root"
@@ -256,7 +273,6 @@ const BookDetails = () => {
                     name="name"
                     defaultValue={user.displayName}
                     placeholder="Name"
-                    // {...register("email")}
                     className="input input-bordered"
                     required
                   />
@@ -270,7 +286,6 @@ const BookDetails = () => {
                     name="email"
                     placeholder="email"
                     defaultValue={user.email}
-                    //   {...register("password")}
                     className="input input-bordered"
                     required
                   />
@@ -283,7 +298,7 @@ const BookDetails = () => {
                     type="date"
                     name="return_date"
                     placeholder="Return date"
-                    //   {...register("password")}
+                    min={new Date().toISOString().split("T")[0]}
                     className="input input-bordered"
                     required
                   />
@@ -302,10 +317,10 @@ const BookDetails = () => {
           {/* ------------------------------ */}
           {/* Modal */}
           {/* ------------------------------ */}
-        <Link to={`/book-story/${id}`}> 
-           <button className="btn btn-error hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
-            Read More
-          </button>
+          <Link to={`/book-story/${id}`}>
+            <button className="btn btn-error hover:bg-blue-600 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">
+              Read More
+            </button>
           </Link>
         </div>
       </div>

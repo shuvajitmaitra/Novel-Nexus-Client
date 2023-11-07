@@ -12,15 +12,14 @@ const Navbar = () => {
 
   const userProfile = (
     <div className="  flex flex-col lg:flex-row items-center justify-center gap-3 pr-3 lg:bg-primary lg:bg-opacity-50 rounded-full">
-      {
-        user?.photoURL ?
+      {user?.photoURL ? (
         <img
-        src={user.photoURL}
-        className="w-12 h-12 object-cover border-4 border-white rounded-full"
+          src={user.photoURL}
+          className="w-12 h-12 object-cover border-4 border-white rounded-full"
         />
-        :
-        <FaRegUserCircle className="w-12 h-12 object-cover border-4 text-zinc-500 border-white rounded-full bg-zinc-200"/>
-      }
+      ) : (
+        <FaRegUserCircle className="w-12 h-12 object-cover border-4 text-zinc-500 border-white rounded-full bg-zinc-200" />
+      )}
       <h2 className=" lg:text-white font-medium">{user?.displayName}</h2>
     </div>
   );
@@ -40,46 +39,46 @@ const Navbar = () => {
         <NavLink
           to={"/"}
           className={({ isActive }) =>
-            isActive ? "btn btn-primary btn-sm " : "btn btn-ghost btn-sm"
+            isActive ? "btn btn-primary btn-sm px-4 lg:px-auto " : "btn btn-accent btn-sm px-4 lg:px-auto"
           }
         >
           Home
         </NavLink>
       </li>
-     {
-      user && <>
-       <li>
-        <NavLink
-          to={"/add-book"}
-          className={({ isActive }) =>
-            isActive ? "btn btn-primary btn-sm" : "btn btn-ghost btn-sm"
-          }
-        >
-          Add Book
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to={"/all-book"}
-          className={({ isActive }) =>
-            isActive ? "btn btn-primary btn-sm" : "btn btn-ghost btn-sm"
-          }
-        >
-          All Book
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to={"/borrowed-book"}
-          className={({ isActive }) =>
-            isActive ? "btn btn-primary btn-sm" : "btn btn-ghost btn-sm"
-          }
-        >
-          Borrowed Book
-        </NavLink>
-      </li>
-      </>
-     }
+      {user && (
+        <>
+          <li>
+            <NavLink
+              to={"/add-book"}
+              className={({ isActive }) =>
+                isActive ? "btn btn-primary btn-sm" : "btn btn-accent btn-sm"
+              }
+            >
+              Add Book
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={"/all-book"}
+              className={({ isActive }) =>
+                isActive ? "btn btn-primary btn-sm" : "btn btn-accent btn-sm"
+              }
+            >
+              All Book
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={"/borrowed-book"}
+              className={({ isActive }) =>
+                isActive ? "btn btn-primary btn-sm" : "btn btn-accent btn-sm"
+              }
+            >
+              Borrowed Book
+            </NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (
@@ -100,7 +99,7 @@ const Navbar = () => {
               <label
                 htmlFor="my-drawer-3"
                 aria-label="open sidebar"
-                className="btn btn-square btn-ghost"
+                className="btn btn-square btn-accent"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -150,10 +149,13 @@ const Navbar = () => {
                     {user ? (
                       <span>{userProfile}</span>
                     ) : (
-                      <ul className="btn bg-primary btn-sm w-ful my-3 text-white">
+                      <ul className=" w-ful my-3 flex gap-2 text-white">
                         {/* Navbar menu content here */}
-                        <li>
+                        <li className="btn bg-primary btn-sm w-ful my-3  text-white">
                           <NavLink to={"/login"}>Sign In</NavLink>
+                        </li>
+                        <li className="btn bg-accent btn-sm w-ful my-3  text-white">
+                          <NavLink to={"/register"}>Sign Up</NavLink>
                         </li>
                       </ul>
                     )}
@@ -205,13 +207,16 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <ul className="btn bg-primary btn-sm w-ful my-3 text-white w-full">
-              <li>
+            <ul className=" w-ful flex flex-col my-3 gap-3 text-white">
+              <li className="btn bg-primary btn-sm w-ful  text-white">
                 <NavLink to={"/login"}>Sign In</NavLink>
+              </li>
+              <li className="btn bg-accent btn-sm w-ful  text-white">
+                <NavLink to={"/register"}>Sign Up</NavLink>
               </li>
             </ul>
           )}
-          {navLink}
+          <li className="w-full mx-auto border border-black block text-center">{navLink}</li>
         </ul>
       </div>
     </div>

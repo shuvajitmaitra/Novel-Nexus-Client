@@ -1,23 +1,31 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import Container from "../Components/Container";
 import SliderBanner from "../Components/SliderBanner";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/category")
-      .then((res) => {
-        setCategories(res.data);
-      })
-      .then((error) => {
-        {
-          error && console.log(error);
-        }
-      });
-  }, []);
+  const {
+    data: categories,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () =>
+      await axios.get("http://localhost:5000/category").then((res) => {return res.data}),
+  });
+  if (isLoading) {
+    return (
+      <span className="h-screen flex justify-center items-center">
+        <progress className="progress w-56"></progress>
+      </span>
+    );
+  }
+
+  if (isError) {
+    return <h2>Error</h2>;
+  }
+
   return (
     <div className="space-y-20 py-12 ">
       {/* ------------------------------------------------ */}
@@ -33,10 +41,11 @@ const Home = () => {
         {categories.map((category) => (
           <div
             key={category._id}
-            className=" flex-col text-gray-800 p-8 rounded shadow-lg hover:shadow-md transform hover:scale-105 transition-transform space-y-5
-
+            className=" flex-col text-gray-800 p-8 rounded shadow-lg hover:shadow-md space-y-5
+            transform hover:scale-105 transition-transform
             flex
-                  hover:from-transparent hover:to-transparent  hover:border-2 hover:text-accent-content hover:border-accent-content  font-medium bg-gradient-to-r hover:bg-transparent from-blue-300 to-purple-400 rounded-tr-2xl rounded-bl-2xl
+            hover:from-transparent hover:to-transparent  hover:border-2 hover:text-accent-content hover:border-accent-content  font-medium hover:bg-transparent     
+            bg-gradient-to-r  from-blue-300 to-purple-400 rounded-tr-2xl rounded-bl-2xl
             "
           >
             <img
@@ -49,9 +58,7 @@ const Home = () => {
 
             <Link to={`categorized-book/${category.category}`}>
               {" "}
-              <button
-                className=" btn w-full font-bold hover:from-transparent hover:to-transparent  hover:border-2 hover:text-accent-content hover:border-accent-content bg-gradient-to-r hover:bg-transparent to-blue-300 from-purple-400 rounded-tr-lg rounded-bl-lg transition-transform hover:scale-105"
-              >
+              <button className=" btn w-full font-bold hover:from-transparent hover:to-transparent  hover:border-2 hover:text-accent-content hover:border-accent-content bg-gradient-to-r hover:bg-transparent to-blue-300 from-purple-400 rounded-tr-lg rounded-bl-lg transition-transform hover:scale-105">
                 View Category
               </button>
             </Link>

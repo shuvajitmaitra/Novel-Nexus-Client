@@ -10,6 +10,7 @@ import PrivateRoute from "../Components/PrivateRoute";
 import CategoriseBooks from "../Components/CategoriseBooks";
 import BookDetails from "../Components/BookDetails";
 import BookStory from "../Components/BookStory";
+import UpdateForm from "../Components/UpdateForm";
 
 const Routes = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const Routes = createBrowserRouter([
       {
         path: "/book-story/:id",
         element: <PrivateRoute><BookStory></BookStory></PrivateRoute>,
+      },
+      {
+        path: "/update-book/:id",
+        element: <PrivateRoute><UpdateForm></UpdateForm></PrivateRoute>,
       },
       {
         path: "/login",

@@ -18,8 +18,8 @@ const Login = () => {
        reset()
         navigate(location.state ? location.state : "/");
     })
-    .catch((error)=>{
-        toast.error(error.message)
+    .catch(()=>{
+        toast.error("Invalid Email/Password")
     })
   };
 
@@ -29,8 +29,8 @@ const Login = () => {
       toast.success("Sign In Successfully")
       navigate(location.state ? location.state : "/");
     })
-    .catch((error)=>{
-      toast.error(error.message)
+    .catch(()=>{
+      toast.error("Invalid Email/Password")
   })
   }
   return (
