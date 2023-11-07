@@ -8,13 +8,11 @@ import Container from "./Container";
 const CategoriseBooks = () => {
 const [books, setBooks] = useState([]);
     const {book_category} = useParams()
-    // console.log(book_category);
     
     useEffect(() => {
         axios.get(`http://localhost:5000/books?book_category=${book_category}`)
         .then(res=>{
             setBooks(res.data)
-            console.log(res.data);
           })
     }, [book_category])
     return (
@@ -25,12 +23,15 @@ const [books, setBooks] = useState([]);
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {
               books?.map(book=>
-                  <div key={book._id} className="flex flex-col bg-gradient-to-r  from-blue-200 to-blue-300 text-gray-800 p-8 rounded shadow-lg hover:shadow-md transform hover:scale-105 transition-transform space-y-2">
+                  <div key={book._id} className="flex flex-col bg-gradient-to-r  from-blue-200 to-blue-300 text-gray-800 p-8 rounded shadow-lg hover:shadow-md transform hover:scale-105 transition-transform space-y-2 relative">
                       <img
                         src={book.image}
                         alt={book.book_name}
                         className="block right-0 left-0 mx-auto w-64 h-72 object-cover rounded-lg"
                       />
+                      {
+                        book.book_quantity < 1 && <span className="absolute top-5 left-3 bg-red-500 px-2 mx-3 my-4 text-white text-lg rounded-sm"> Not Available</span>
+                      }
                       <h2 className="text-2xl font-semibold">
                         {book.book_name}
                       </h2>

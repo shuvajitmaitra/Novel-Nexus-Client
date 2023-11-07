@@ -54,9 +54,7 @@ const BookDetails = () => {
       short_description,
       book_quantity,
     } = book;
-    //   console.log(id);
-    // const [quantity, setQuantity] = useState(book_quantity)
-
+ 
   useEffect(() => {
     axios.get(`http://localhost:5000/books/${id}`).then((res) => {
       setBook(res.data);
@@ -99,6 +97,11 @@ const BookDetails = () => {
 
   const handleBorrow = (e) => {
     e.preventDefault();
+    const return_date = e.target.return_date.value
+    const today = new Date();
+
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const borrowed_date = new Intl.DateTimeFormat('en-US', options).format(today);
    
     if (book_quantity) {
       const newQuantity = book_quantity - 1;
@@ -106,13 +109,16 @@ const BookDetails = () => {
       axios
       .post("http://localhost:5000/borrowed", {
         email: user.email,
+        objectId: id,
+        return_date,
+        borrowed_date,
         book_name,
         image,
         author_name,
         category,
         book_rating,
         short_description,
-        book_quantity,
+        book_quantity: newQuantity,
       })
       .then((res) => {
         if(!res.data.insertedId){
@@ -135,7 +141,10 @@ const BookDetails = () => {
           }
         })
         .catch((error) => {
-            toast.error(error);
+           {
+            error && console.log(error);
+            toast.error("Something wrong try again later");
+           }
         });
         }
       })
@@ -162,7 +171,7 @@ const BookDetails = () => {
         </h1>
         <div>
           <h2 className="text-accent font-medium text-lg underline">
-            Name of the Book:{" "}
+            Name of the Book:
           </h2>
           <p className="text-secondary no-underline">{book_name}</p>
         </div>
@@ -178,7 +187,10 @@ const BookDetails = () => {
             <h2 className="text-accent font-medium text-lg underline">
               Book Quantity:
             </h2>
-            <span className="text-secondary no-underline">{book_quantity}</span>
+            {
+              book_quantity ? <span className={`text-secondary no-underline`}>{book_quantity}</span> 
+                            : <span className="bg-red-500 rounded-full px-2 my-2 text-white"> Not Available</span>
+            }
           </div>
           <div className="flex flex-col lg:flex-row  lg:gap-4 items-start lg:items-center">
             <h2 className="text-accent font-medium text-lg underline">
@@ -194,7 +206,7 @@ const BookDetails = () => {
           </h2>
           <p className=" flex items-center text-base gap-3">
             {" "}
-            <StarRating rating={book_rating}></StarRating> ({book_rating})
+            <StarRating rating={parseFloat(book_rating)}></StarRating> ({book_rating})
           </p>
         </div>
         <div>
@@ -207,7 +219,7 @@ const BookDetails = () => {
         <div className=" flex justify-center gap-3">
           <button
             onClick={openModal}
-            className="btn btn-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105"
+            className={`btn btn-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105 &&  ${book_quantity < 1 &&  "btn-disabled" }`}
           >
             Borrow
           </button>

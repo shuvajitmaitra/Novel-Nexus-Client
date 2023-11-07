@@ -9,11 +9,12 @@ const AllBook = () => {
         axios
           .get("http://localhost:5000/books")
           .then((res) => {
-            console.log(res.data);
             setBooks(res.data);
           })
           .then((error) => {
-            console.log(error);
+            {
+              error && console.log(error);
+            }
           });
       }, []);
     return (
@@ -39,7 +40,7 @@ const AllBook = () => {
                               <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={book.book_rating}></StarRating> ({book.book_rating})</p>
                            </div>
              
-             <div className="flex-grow"></div>
+                              <div className="flex-grow"></div>
                           
                             <div className=" flex justify-center gap-3">
                               <button className="bg-accent hover:bg-green-400 text-white rounded py-2 px-4 focus:outline-none transition-transform hover:scale-105">

@@ -1,7 +1,6 @@
 import {BsStar, BsStarFill, BsStarHalf} from "react-icons/bs"
 import PropsTypes from "prop-types"
 const StarRating = ({rating}) => {
-
     const ratingFunc = Array.from({length: 5}, (val, index)=>{
         let number = index+0.5;
         return <span key={index}>
@@ -22,7 +21,7 @@ const StarRating = ({rating}) => {
 };
 
 StarRating.propTypes = {
-    rating: PropsTypes.number
+    rating: PropsTypes.number.isRequired
 }
 
 export default StarRating;

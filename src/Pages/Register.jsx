@@ -13,10 +13,9 @@ const Register = () => {
   const navigate = useNavigate();
   const { createUser, logOut, googleSignIn } = useContext(AuthContext);
   const onSubmit = (data) => {
-    console.log(data);
     createUser(data.email, data.password)
-      .then((res) => {
-        console.log(res.user);
+      .then(() => {
+      
         updateProfile(auth.currentUser, {
           displayName: data.displayName,
           photoURL: data.photoURL,

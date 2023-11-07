@@ -12,7 +12,6 @@ const Login = () => {
   const navigate = useNavigate()
 
   const onSubmit = (data) => {
-    console.log(data);
     userSignIn(data.email, data.password)
     .then(()=>{
         toast.success("Sign In Successfully")

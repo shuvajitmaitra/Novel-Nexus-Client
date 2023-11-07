@@ -18,7 +18,7 @@ const {
     bookSummary}= data;
 
 
-    console.log(bookName, bookImage, bookQuantity, authorName, category, sortDescription, bookRating, bookSummary);
+   
     axios.post("http://localhost:5000/books", {
         book_name:bookName,
         image:bookImage,
@@ -30,7 +30,7 @@ const {
         book_summary: bookSummary,
     })
     .then(res=>{
-        console.log(res.data);
+       
         if(res.data.insertedId){
            return toast.success("Book Added Successfully")
         }
@@ -95,11 +95,11 @@ const {
            {...register("category")} name="category"
            className="input input-bordered rounded"
            required>
-            <option selected disabled  id="">Choose a Category</option>
-            <option value="History"  id="">History</option>
-            <option value="Drama" id="">Drama</option>
-            <option value="Novel" id="">Novel</option>
-            <option value="Thriller" id="">Thriller</option>
+            <option >Choose a Category</option>
+            <option value="History"  >History</option>
+            <option value="Drama" >Drama</option>
+            <option value="Novel" >Novel</option>
+            <option value="Thriller" >Thriller</option>
          </select>
         </div>
       <div className="form-control flex-1">

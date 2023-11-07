@@ -3,19 +3,24 @@ import Container from "./Container";
 import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { FcLibrary } from "react-icons/fc";
+import { FaRegUserCircle } from "react-icons/fa";
 import { auth } from "../Firebase/firebase.config";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
-  console.log(user?.displayName);
 
   const userProfile = (
     <div className="  flex flex-col lg:flex-row items-center justify-center gap-3 pr-3 lg:bg-primary lg:bg-opacity-50 rounded-full">
-      <img
-        src={user?.photoURL}
+      {
+        user?.photoURL ?
+        <img
+        src={user.photoURL}
         className="w-12 h-12 object-cover border-4 border-white rounded-full"
-      />
+        />
+        :
+        <FaRegUserCircle className="w-12 h-12 object-cover border-4 text-zinc-500 border-white rounded-full bg-zinc-200"/>
+      }
       <h2 className=" lg:text-white font-medium">{user?.displayName}</h2>
     </div>
   );
