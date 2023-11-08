@@ -34,7 +34,7 @@ const BookStory = () => {
     return (
        <div  className="bg-gradient-to-r from-blue-500 via-a2d0f7 to-teal-200 ">
         
-         <div id="container" className="min-h-screen relative flex flex-col items-center space-y-3 p-5 md:p-10 "
+         <div id="container" className="min-h-screen relative flex flex-col items-center space-y-3 py-20 "
        >
             <h1 className="py-5 md:py-10 px-5 rounded-full lg:w-1/2 mx-auto bg-white text-center font-bold text-2xl lg:text-4xl">{book_name}</h1>
             <span className="md:w-1/3  mx-auto text-center rounded-full p-3 bg-white font-semibold">

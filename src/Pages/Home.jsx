@@ -4,6 +4,7 @@ import SliderBanner from "../Components/SliderBanner";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Footer from "./Footer";
+import CustomerReviews from "../Components/CustomerReviews";
 
 const Home = () => {
   const {
@@ -65,6 +66,9 @@ const Home = () => {
             </Link>
           </div>
         ))}
+      </Container>
+      <Container>
+        <CustomerReviews></CustomerReviews>
       </Container>
       <Footer></Footer>
     </div>
