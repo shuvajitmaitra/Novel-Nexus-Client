@@ -99,7 +99,7 @@ const Navbar = () => {
               <label
                 htmlFor="my-drawer-3"
                 aria-label="open sidebar"
-                className="btn btn-square btn-accent"
+                className="btn btn-square btn-ghost"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +195,7 @@ const Navbar = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className=" p-4 w-1/2 md:w-1/3 flex flex-col items-center   min-h-full bg-base-200 ">
+        <div className=" p-4 w-1/2 md:w-1/3 flex flex-col items-center   min-h-full bg-base-200 ">
           {user ? (
             <>
               <div className="">{userProfile}</div>
@@ -216,8 +216,8 @@ const Navbar = () => {
               </li>
             </ul>
           )}
-          <li className="w-full mx-auto border border-black block text-center">{navLink}</li>
-        </ul>
+          <span className="w-full mx-auto list-none text-center">{navLink}</span>
+        </div>
       </div>
     </div>
   );

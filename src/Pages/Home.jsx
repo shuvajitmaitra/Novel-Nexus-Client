@@ -3,6 +3,7 @@ import Container from "../Components/Container";
 import SliderBanner from "../Components/SliderBanner";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import Footer from "./Footer";
 
 const Home = () => {
   const {
@@ -27,7 +28,7 @@ const Home = () => {
   }
 
   return (
-    <div className="space-y-20 py-12 ">
+    <div className="space-y-20 pt-12  ">
       {/* ------------------------------------------------ */}
       {/* Banner slider */}
       {/* ------------------------------------------------ */}
@@ -37,7 +38,7 @@ const Home = () => {
       {/* ------------------------------------------------ */}
       {/* book category */}
       {/* ------------------------------------------------ */}
-      <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <Container className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map((category) => (
           <div
             key={category._id}
@@ -65,6 +66,7 @@ const Home = () => {
           </div>
         ))}
       </Container>
+      <Footer></Footer>
     </div>
   );
 };

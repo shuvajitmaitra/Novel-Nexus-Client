@@ -11,11 +11,13 @@ import CategoriseBooks from "../Components/CategoriseBooks";
 import BookDetails from "../Components/BookDetails";
 import BookStory from "../Components/BookStory";
 import UpdateForm from "../Components/UpdateForm";
+import ErrorPage from "../Pages/ErrorPage";
 
 const Routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
