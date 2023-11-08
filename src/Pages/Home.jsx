@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import Footer from "./Footer";
 import CustomerReviews from "../Components/CustomerReviews";
 import BookRequest from "../Components/BookRequest";
+import PostReview from "../Components/PostReview";
+import PrivateRoute from "../Components/PrivateRoute";
 
 const Home = () => {
   const {
@@ -71,7 +73,10 @@ const Home = () => {
       <Container>
         <CustomerReviews></CustomerReviews>
       </Container>
-      <BookRequest></BookRequest>
+     <PrivateRoute>
+     <BookRequest></BookRequest>
+      <PostReview></PostReview>
+     </PrivateRoute>
       <Footer></Footer>
     </div>
   );

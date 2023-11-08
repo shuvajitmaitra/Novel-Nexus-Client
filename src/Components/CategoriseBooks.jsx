@@ -40,7 +40,7 @@ const [books, setBooks] = useState([]);
                      <p className="text-base text-gray-500">Category: {book.category}</p>
                      <p className="text-base text-gray-500">Quantity: {book.book_quantity}</p>
                      </div>
-                        <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={book.book_rating}></StarRating> ({book.book_rating})</p>
+                        <p className=" flex items-center text-base text-gray-500">Rating: <StarRating rating={parseFloat(book.book_rating)}></StarRating> ({book.book_rating})</p>
        
                          <div className="flex-grow"></div>
                     

@@ -119,6 +119,7 @@ const UpdateForm = () => {
             </label>
             <input
               type="number"
+              min="1"
               {...register("bookQuantity")}
               name="bookQuantity"
               defaultValue={books.book_quantity}
@@ -193,6 +194,9 @@ const UpdateForm = () => {
             </label>
             <input
               type="number"
+              step="0.01"
+              min="1"
+              max="5"
               {...register("bookRating")}
               name="bookRating"
               placeholder="Book Summary"

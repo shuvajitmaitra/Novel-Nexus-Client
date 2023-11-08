@@ -35,7 +35,7 @@ const CustomerReviews = () => {
     </div>
   }
   return (
-    <div className=" bg-accent bg-opacity-50 py-10">
+    <div className=" bg-accent bg-opacity-50 py-10 rounded-lg">
       <Swiper
         modules={[Navigation, A11y]}
         loop={true}

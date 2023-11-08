@@ -15,6 +15,8 @@ const BookRequest = () => {
       .then((res) => {
         if (!res.data.insertedId) {
             toast.error("Already in request list");
+            reset()
+          return 
           }
         if (res.data.insertedId) {
             toast.success("Request Send Successfully");

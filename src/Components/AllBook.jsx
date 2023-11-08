@@ -50,7 +50,7 @@ const AllBook = () => {
                 Category: {book.category}
               </p>
               <p className=" flex items-center text-base text-gray-500">
-                Rating: <StarRating rating={book.book_rating}></StarRating> (
+                Rating: <StarRating rating={parseFloat(book.book_rating)}></StarRating> (
                 {book.book_rating})
               </p>
             </div>

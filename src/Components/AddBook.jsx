@@ -73,7 +73,7 @@ const {
           <label className="label">
             <span className="label-text">Book Quantity (Number)</span>
           </label>
-          <input type="number" {...register("bookQuantity")} name="bookQuantity" placeholder="Book Quantity" className="input input-bordered" required />
+          <input type="number" {...register("bookQuantity")} min="1" name="bookQuantity" placeholder="Book Quantity" className="input input-bordered" required />
         </div>
       <div className="form-control flex-1">
           <label className="label">
@@ -120,7 +120,7 @@ const {
           <label className="label">
             <span className="label-text">Book Rating (Number)</span>
           </label>
-          <input type="number" {...register("bookRating")} name="bookRating"  placeholder="Book Summary" className="input input-bordered" required />
+          <input type="number" {...register("bookRating")} name="bookRating" step="0.01" min='1' max="5"  placeholder="Book Summary" className="input input-bordered" required />
         </div>
       <div className="form-control flex-1">
           <label className="label">

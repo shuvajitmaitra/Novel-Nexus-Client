@@ -103,7 +103,7 @@ const BorrowedBook = () => {
                 Category: {borrow.category}
               </p>
               <p className=" flex items-center text-base text-gray-500">
-                Rating: <StarRating rating={borrow.book_rating}></StarRating> (
+                Rating: <StarRating rating={parseFloat(borrow.book_rating)}></StarRating> (
                 {borrow.book_rating})
               </p>
               <p className=" text-gray-500">
