@@ -1,29 +1,30 @@
-import axios from "axios";
 import Container from "./Container";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const BookRequest = () => {
   const { register, handleSubmit, reset } = useForm();
+  const axiosSecure = useAxiosSecure();
   const onSubmit = (data) => {
     const { bookName } = data;
 
-    axios
-      .post("http://localhost:5000/book-request", {
+    axiosSecure
+      .post("/book-request", {
         book_name: bookName,
       })
       .then((res) => {
         if (!res.data.insertedId) {
-            toast.error("Already in request list");
-            reset()
-          return 
-          }
-        if (res.data.insertedId) {
-            toast.success("Request Send Successfully");
-            reset()
-          return 
+          toast.error("Already in request list");
+          reset();
+          return;
         }
-      })
+        if (res.data.insertedId) {
+          toast.success("Request Send Successfully");
+          reset();
+          return;
+        }
+      });
   };
   return (
     <Container className="bg-secondary bg-opacity-50 py-10 rounded-lg">

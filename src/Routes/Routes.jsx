@@ -12,6 +12,8 @@ import BookDetails from "../Components/BookDetails";
 import BookStory from "../Components/BookStory";
 import UpdateForm from "../Components/UpdateForm";
 import ErrorPage from "../Pages/ErrorPage";
+import PostReview from "../Components/PostReview";
+import BookRequest from "../Components/BookRequest";
 
 const Routes = createBrowserRouter([
   {
@@ -34,6 +36,14 @@ const Routes = createBrowserRouter([
       {
         path: "/borrowed-book",
         element: <PrivateRoute><BorrowedBook></BorrowedBook></PrivateRoute>,
+      },
+      {
+        path: "/",
+        element: <PrivateRoute><BookRequest></BookRequest></PrivateRoute>,
+      },
+      {
+        path: "/",
+        element: <PrivateRoute><PostReview></PostReview></PrivateRoute>,
       },
       {
         path: "/categorized-book/:book_category",

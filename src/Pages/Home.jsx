@@ -1,4 +1,3 @@
-import axios from "axios";
 import Container from "../Components/Container";
 import SliderBanner from "../Components/SliderBanner";
 import { Link } from "react-router-dom";
@@ -7,9 +6,10 @@ import Footer from "./Footer";
 import CustomerReviews from "../Components/CustomerReviews";
 import BookRequest from "../Components/BookRequest";
 import PostReview from "../Components/PostReview";
-import PrivateRoute from "../Components/PrivateRoute";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const Home = () => {
+  const axiosSecure = useAxiosSecure();
   const {
     data: categories,
     isLoading,
@@ -17,7 +17,9 @@ const Home = () => {
   } = useQuery({
     queryKey: ["categories"],
     queryFn: async () =>
-      await axios.get("http://localhost:5000/category").then((res) => {return res.data}),
+      await axiosSecure.get("/category").then((res) => {
+        return res.data;
+      }),
   });
   if (isLoading) {
     return (
@@ -73,10 +75,10 @@ const Home = () => {
       <Container>
         <CustomerReviews></CustomerReviews>
       </Container>
-     <PrivateRoute>
-     <BookRequest></BookRequest>
+
+      <BookRequest></BookRequest>
       <PostReview></PostReview>
-     </PrivateRoute>
+
       <Footer></Footer>
     </div>
   );

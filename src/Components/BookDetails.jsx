@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
@@ -8,6 +7,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 import { MdClose } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 {
   /* ------------------------------ */
@@ -40,11 +40,11 @@ const customStyles = {
 }
 
 const BookDetails = () => {
+  const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  
   const {
     data: book,
     isLoading,
@@ -53,7 +53,7 @@ const BookDetails = () => {
   } = useQuery({
     queryKey: ["book"],
     queryFn: async () =>
-      await axios.get(`http://localhost:5000/books/${id}`).then((res) => {
+      await axiosSecure.get(`/books/${id}`).then((res) => {
         return res.data;
       }),
   });
@@ -93,8 +93,6 @@ const BookDetails = () => {
     setIsOpen(true);
   }
 
- 
-
   function closeModal() {
     setIsOpen(false);
   }
@@ -121,8 +119,8 @@ const BookDetails = () => {
     if (book_quantity) {
       const newQuantity = book_quantity - 1;
 
-      axios
-        .post("http://localhost:5000/borrowed", {
+      axiosSecure
+        .post("/borrowed", {
           email: user.email,
           objectId: id,
           return_date,
@@ -140,28 +138,19 @@ const BookDetails = () => {
             toast.error("You already Borrowed");
           }
           if (res.data.insertedId) {
-            axios
-              .put(`http://localhost:5000/books/${id}`, {
+            axiosSecure
+              .put(`/books/${id}`, {
                 book_quantity: newQuantity,
               })
               .then((response) => {
                 console.log(response.data);
                 if (response.data.modifiedCount > 0) {
                   toast.success("Successfully Borrowed");
-                  refetch()
+                  refetch();
                   closeModal();
-                }
-              })
-              .catch((error) => {
-                {
-                  error && console.log(error);
-                  toast.error("Something wrong try again later");
                 }
               });
           }
-        })
-        .catch((error) => {
-          toast.error(error);
         });
     }
   };

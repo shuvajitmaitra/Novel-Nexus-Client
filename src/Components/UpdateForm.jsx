@@ -3,33 +3,33 @@ import Container from "./Container";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+
 // import { AuthContext } from "../Provider/AuthProvider";
 
 const UpdateForm = () => {
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure(navigate);
   const { register, handleSubmit } = useForm();
   const { id } = useParams();
   const [books, setBooks] = useState({});
-    const navigate = useNavigate()
-// const {loading} = useContext(AuthContext)
-
-
+  // const {loading} = useContext(AuthContext)
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/books/${id}`)
+    axiosSecure
+      .get(`/books/${id}`)
       .then((res) => {
         setBooks(res.data);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         {
-            error && console.log(error);
-            toast.error("Something wrong try again later");
+          error && console.log(error);
+          toast.error("Something wrong try again later");
         }
-    });
-}, [id]);
+      });
+  }, [id, axiosSecure]);
 
-// console.log(books);
+  // console.log(books);
   const onSubmit = (data) => {
     const {
       bookName,
@@ -42,8 +42,8 @@ const UpdateForm = () => {
       bookSummary,
     } = data;
 
-    axios
-      .put("http://localhost:5000/books", {
+    axiosSecure
+      .put("/books", {
         book_name: bookName,
         image: bookImage,
         book_quantity: bookQuantity,
@@ -55,9 +55,9 @@ const UpdateForm = () => {
       })
       .then((res) => {
         if (res.data.insertedId) {
-            toast.success("Book Updated Successfully");
-            navigate("/all-book")
-          return 
+          toast.success("Book Updated Successfully");
+          navigate("/all-book");
+          return;
         }
       })
       .then((error) => {
@@ -136,7 +136,6 @@ const UpdateForm = () => {
               type="text"
               {...register("authorName")}
               name="authorName"
-              
               defaultValue={books.author_name}
               placeholder="Author Name"
               className="input input-bordered"
@@ -174,7 +173,6 @@ const UpdateForm = () => {
               type="text"
               {...register("sortDescription")}
               name="sortDescription"
-              
               defaultValue={books.short_description}
               placeholder="Sort Description"
               className="input input-bordered"
@@ -200,7 +198,6 @@ const UpdateForm = () => {
               {...register("bookRating")}
               name="bookRating"
               placeholder="Book Summary"
-              
               defaultValue={books.book_rating}
               className="input input-bordered"
               required
@@ -214,7 +211,6 @@ const UpdateForm = () => {
               type="text"
               {...register("bookSummary")}
               name="bookSummary"
-              
               defaultValue={books.book_summary}
               placeholder="Book Summary"
               className="input input-bordered"

@@ -9,12 +9,15 @@ import {
 import { PropTypes } from "prop-types";
 import { auth } from "../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
-// import axios from "axios";
+import useAxiosSecure from "../Hook/useAxiosSecure";
+
+//
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
+  const axiosSecure = useAxiosSecure();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   // create User.........
@@ -44,28 +47,30 @@ const AuthProvider = ({ children }) => {
   // onAuthStateChanged.......
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // const userEmail = currentUser?.email || user?.email;
+      const userEmail = currentUser?.email || user?.email;
       setUser(currentUser);
-      // const loggedUser = {email: userEmail}
-      // if(currentUser){
-      //   // console.log(loggedUser);
-      //   axios.post('http://localhost:5000/jwt', loggedUser, {withCredentials: true} )
-      //   .then(res =>{
-      //     console.log("from the auth provider in line of 52.......................",res.data);
-      //   })
-      // }else{
-      //   axios.post("http://localhost:5000/logout", loggedUser, {withCredentials: true})
-      //   .then(res =>{
-      //     console.log(res.data);
-      //   })
-      // }
+      const loggedUser = { email: userEmail };
+      if (currentUser) {
+        // console.log(loggedUser);
+        axiosSecure
+          .post("/jwt", loggedUser)
+          .then((res) => {
+            console.log(res.data);
+          });
+      } else {
+        axiosSecure
+          .post("/logout", loggedUser)
+          .then((res) => {
+            console.log(res.data);
+          });
+      }
       setLoading(false);
 
       return () => {
         return unSubscribe();
       };
     });
-  }, [user]);
+  }, [user, axiosSecure]);
 
   const authInfo = {
     user,

@@ -1,32 +1,33 @@
-import axios from "axios";
 // import { useEffect, useState } from "react";
 import Container from "./Container";
 import StarRating from "./StarRating";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const AllBook = () => {
-  const {data, isLoading, isError} = useQuery({
-    queryFn: async() => 
-      await axios.get("http://localhost:5000/books")
-      .then((res) => {
+  const axiosSecure = useAxiosSecure();
+  const { data, isLoading, isError } = useQuery({
+    queryFn: async () =>
+      await axiosSecure.get("/books").then((res) => {
         console.log(res.data);
-       return res.data
+        return res.data;
       }),
-    queryKey: ['bookData'],
+    queryKey: ["bookData"],
   });
 
-
-  if(isLoading){
-    return <span className="h-screen flex justify-center items-center">
-    <progress className="progress w-56"></progress>
-  </span>
+  if (isLoading) {
+    return (
+      <span className="h-screen flex justify-center items-center">
+        <progress className="progress w-56"></progress>
+      </span>
+    );
   }
 
-  if(isError){
-    return <h2>Error</h2>
+  if (isError) {
+    return <h2>Error</h2>;
   }
- 
+
   return (
     <Container>
       <h3 className="text-3xl md:text-6xl py-6 font-bold text-primary text-center">
@@ -50,8 +51,9 @@ const AllBook = () => {
                 Category: {book.category}
               </p>
               <p className=" flex items-center text-base text-gray-500">
-                Rating: <StarRating rating={parseFloat(book.book_rating)}></StarRating> (
-                {book.book_rating})
+                Rating:{" "}
+                <StarRating rating={parseFloat(book.book_rating)}></StarRating>{" "}
+                ({book.book_rating})
               </p>
             </div>
 
