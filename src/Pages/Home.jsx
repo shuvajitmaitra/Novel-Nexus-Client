@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Footer from "./Footer";
 import CustomerReviews from "../Components/CustomerReviews";
+import BookRequest from "../Components/BookRequest";
 
 const Home = () => {
   const {
@@ -70,6 +71,7 @@ const Home = () => {
       <Container>
         <CustomerReviews></CustomerReviews>
       </Container>
+      <BookRequest></BookRequest>
       <Footer></Footer>
     </div>
   );
