@@ -37,7 +37,7 @@ useEffect(() => {
   return (
    <div className="h-[80vh] flex justify-center flex-col gap-3 items-center">
     <h3 className="text-3xl md:text-6xl font-bold text-primary text-center">
-        To access you need to librarian 
+        Only Librarian can access! 
       </h3>
       <Link to="/login"><button className=" btn hover:from-transparent hover:to-transparent  hover:border-2 hover:text-accent-content hover:border-accent-content  font-medium bg-gradient-to-r hover:bg-transparent to-blue-300 from-purple-400 rounded-tr-lg rounded-bl-lg transition-transform hover:scale-105">Login</button></Link>
    </div>
