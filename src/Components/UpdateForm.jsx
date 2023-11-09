@@ -1,67 +1,65 @@
-import { useForm } from "react-hook-form";
 import Container from "./Container";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useAxiosSecure from "../Hook/useAxiosSecure";
-
-// import { AuthContext } from "../Provider/AuthProvider";
+import axios from "axios";
+import useAuth from "../Hook/useAuth";
 
 const UpdateForm = () => {
   const navigate = useNavigate();
-  const axiosSecure = useAxiosSecure(navigate);
-  const { register, handleSubmit } = useForm();
   const { id } = useParams();
   const [books, setBooks] = useState({});
-  // const {loading} = useContext(AuthContext)
 
+  const { filterFunc } = useAuth();
+  // const userEmail = user.email
+  //   form er default value er jonno data load hosche............
   useEffect(() => {
-    axiosSecure
-      .get(`/books/${id}`)
-      .then((res) => {
-        setBooks(res.data);
+    axios
+      .get(`https://assignment-11-novel-nexus-server.vercel.app/books/${id}`, {
+        withCredentials: true,
       })
-      .catch((error) => {
-        {
-          error && console.log(error);
-          toast.error("Something wrong try again later");
-        }
+      .then((res) => {
+        return setBooks(res.data);
       });
-  }, [id, axiosSecure]);
+  }, [id]);
 
-  // console.log(books);
-  const onSubmit = (data) => {
-    const {
-      bookName,
-      bookImage,
-      bookQuantity,
-      authorName,
-      category,
-      sortDescription,
-      bookRating,
-      bookSummary,
-    } = data;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    axiosSecure
-      .put("/books", {
-        book_name: bookName,
-        image: bookImage,
-        book_quantity: bookQuantity,
-        author_name: authorName,
-        category: category,
-        book_rating: bookRating,
-        short_description: sortDescription,
-        book_summary: bookSummary,
-      })
+    const bookName = e.target.bookName.value;
+    const bookImage = e.target.bookImage.value;
+    const bookQuantity = parseFloat(e.target.bookQuantity.value);
+    const authorName = e.target.authorName.value;
+    const category = e.target.category.value;
+    const sortDescription = e.target.sortDescription.value;
+    const bookRating = e.target.bookRating.value;
+    const bookSummary = e.target.bookSummary.value;
+if(category == "Choose a category"){
+  return toast.error('Please select a category')
+}
+    axios
+      .put(
+        `https://assignment-11-novel-nexus-server.vercel.app/update-books/${id}`,
+        {
+          book_name: bookName,
+          image: bookImage,
+          book_quantity: bookQuantity,
+          author_name: authorName,
+          category: category,
+          book_rating: bookRating,
+          short_description: sortDescription,
+          book_summary: bookSummary,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
-        if (res.data.insertedId) {
+        console.log(res.data);
+        if (res.data.modifiedCount) {
+          filterFunc();
           toast.success("Book Updated Successfully");
           navigate("/all-book");
           return;
         }
-      })
-      .then((error) => {
-        toast.error(error);
       });
   };
 
@@ -71,7 +69,7 @@ const UpdateForm = () => {
         Update Books Here!
       </h1>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit}
         className="card-body lg:w-3/4 mx-auto"
       >
         {/* ------------------------------------------------ */}
@@ -84,7 +82,6 @@ const UpdateForm = () => {
             </label>
             <input
               type="text"
-              {...register("bookName")}
               name="bookName"
               defaultValue={books.book_name}
               placeholder="Book Name"
@@ -99,10 +96,8 @@ const UpdateForm = () => {
             </label>
             <input
               type="text"
-              {...register("bookImage")}
               name="bookImage"
               defaultValue={books.image}
-              placeholder="Book Image"
               className="input input-bordered"
               required
             />
@@ -119,11 +114,9 @@ const UpdateForm = () => {
             </label>
             <input
               type="number"
-              min="1"
-              {...register("bookQuantity")}
+              min="0"
               name="bookQuantity"
               defaultValue={books.book_quantity}
-              placeholder="Book Quantity"
               className="input input-bordered"
               required
             />
@@ -134,10 +127,8 @@ const UpdateForm = () => {
             </label>
             <input
               type="text"
-              {...register("authorName")}
               name="authorName"
               defaultValue={books.author_name}
-              placeholder="Author Name"
               className="input input-bordered"
               required
             />
@@ -153,12 +144,17 @@ const UpdateForm = () => {
             </label>
             <select
               type="text"
-              {...register("category")}
               name="category"
               className="input input-bordered rounded"
               required
             >
-              <option>Choose a Category</option>
+              <option
+                selected
+                disabled
+                
+              >
+               Choose a category
+              </option>
               <option value="History">History</option>
               <option value="Drama">Drama</option>
               <option value="Novel">Novel</option>
@@ -171,10 +167,8 @@ const UpdateForm = () => {
             </label>
             <input
               type="text"
-              {...register("sortDescription")}
               name="sortDescription"
               defaultValue={books.short_description}
-              placeholder="Sort Description"
               className="input input-bordered"
               required
             />
@@ -195,9 +189,7 @@ const UpdateForm = () => {
               step="0.01"
               min="1"
               max="5"
-              {...register("bookRating")}
               name="bookRating"
-              placeholder="Book Summary"
               defaultValue={books.book_rating}
               className="input input-bordered"
               required
@@ -209,10 +201,8 @@ const UpdateForm = () => {
             </label>
             <input
               type="text"
-              {...register("bookSummary")}
               name="bookSummary"
               defaultValue={books.book_summary}
-              placeholder="Book Summary"
               className="input input-bordered"
               required
             />

@@ -14,6 +14,7 @@ import UpdateForm from "../Components/UpdateForm";
 import ErrorPage from "../Pages/ErrorPage";
 import PostReview from "../Components/PostReview";
 import BookRequest from "../Components/BookRequest";
+import AdminRoutes from "./AdminRoutes";
 
 const Routes = createBrowserRouter([
   {
@@ -27,11 +28,11 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/add-book",
-        element: <PrivateRoute><AddBook></AddBook></PrivateRoute>,
+        element: <AdminRoutes><AddBook></AddBook></AdminRoutes>,
       },
       {
         path: "/all-book",
-        element:<PrivateRoute><AllBook></AllBook></PrivateRoute> ,
+        element:<AdminRoutes><AllBook></AllBook></AdminRoutes> ,
       },
       {
         path: "/borrowed-book",

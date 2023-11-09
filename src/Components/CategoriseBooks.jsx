@@ -2,22 +2,28 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
 import Container from "./Container";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
 
 const CategoriseBooks = () => {
-  const axiosSecure = useAxiosSecure();
   const [books, setBooks] = useState([]);
   const { book_category } = useParams();
 
   useEffect(() => {
-    axiosSecure.get(`/books?book_category=${book_category}`).then((res) => {
-      setBooks(res.data);
-    });
-  }, [book_category, axiosSecure]);
+    axios
+      .get(
+        `https://assignment-11-novel-nexus-server.vercel.app/categorizedBooks?book_category=${book_category}`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setBooks(res.data);
+      });
+  }, [book_category]);
   return (
     <Container>
       <h3 className="text-3xl md:text-6xl py-6 font-bold text-primary text-center">
-        All Books here!
+        {book_category} Books here!
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {books?.map((book) => (

@@ -4,10 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { SwiperNavButtons } from "./SwiperNavButtons";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
 
 const SliderBanner = () => {
-  const axiosSecure = useAxiosSecure();
   const {
     data: sliders,
     isLoading,
@@ -15,9 +14,13 @@ const SliderBanner = () => {
   } = useQuery({
     queryKey: ["slider"],
     queryFn: async () =>
-      await axiosSecure.get("/slider").then((res) => {
-        return res.data;
-      }),
+      await axios
+        .get("https://assignment-11-novel-nexus-server.vercel.app/slider", {
+          withCredentials: true,
+        })
+        .then((res) => {
+          return res.data;
+        }),
   });
 
   if (isLoading) {

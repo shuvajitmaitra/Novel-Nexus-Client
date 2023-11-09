@@ -1,8 +1,18 @@
-# React + Vite
+Assignment_ID: assignment_category_0008
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live Link: https://novel-nexus-io.web.app
 
-Currently, two official plugins are available:
+Librarian Email : librarian@gmail.com
+Librarian pass  : Librarian#1
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+- Implement jwt authentication
+- Firebase Authentication
+- swiper js package(use in banner and reviews section)
+- React hook form
+- React to pdf for download pdf from react js
+- CRUD operation
+- CRUD with Axios 
+- explore tanstack query
+- Try to implement add librarian role base login
+

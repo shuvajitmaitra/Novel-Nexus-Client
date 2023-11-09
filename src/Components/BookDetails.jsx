@@ -1,24 +1,14 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
 import Container from "./Container";
 import ReactModal from "react-modal";
-import { AuthContext } from "../Provider/AuthProvider";
 import { MdClose } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
+import useAuth from "../Hook/useAuth";
 
-{
-  /* ------------------------------ */
-}
-{
-  /* Modal */
-}
-{
-  /* ------------------------------ */
-}
-// ref={(_subtitle) => (subtitle = _subtitle)}
 const customStyles = {
   content: {
     top: "50%",
@@ -29,19 +19,9 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
   },
 };
-{
-  /* ------------------------------ */
-}
-{
-  /* Modal */
-}
-{
-  /* ------------------------------ */
-}
 
 const BookDetails = () => {
-  const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const { id } = useParams();
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -53,9 +33,14 @@ const BookDetails = () => {
   } = useQuery({
     queryKey: ["book"],
     queryFn: async () =>
-      await axiosSecure.get(`/books/${id}`).then((res) => {
-        return res.data;
-      }),
+      await axios
+        .get(
+          `https://assignment-11-novel-nexus-server.vercel.app/books/${id}`,
+          { withCredentials: true }
+        )
+        .then((res) => {
+          return res.data;
+        }),
   });
 
   if (isLoading) {
@@ -78,16 +63,6 @@ const BookDetails = () => {
     short_description,
     book_quantity,
   } = book;
-  {
-    /* ------------------------------ */
-  }
-  {
-    /* Modal */
-  }
-  {
-    /* ------------------------------ */
-  }
-  //   let subtitle;
 
   function openModal() {
     setIsOpen(true);
@@ -95,15 +70,6 @@ const BookDetails = () => {
 
   function closeModal() {
     setIsOpen(false);
-  }
-  {
-    /* ------------------------------ */
-  }
-  {
-    /* Modal */
-  }
-  {
-    /* ------------------------------ */
   }
 
   const handleBorrow = (e) => {
@@ -119,8 +85,8 @@ const BookDetails = () => {
     if (book_quantity) {
       const newQuantity = book_quantity - 1;
 
-      axiosSecure
-        .post("/borrowed", {
+      axios
+        .post("https://assignment-11-novel-nexus-server.vercel.app/borrowed", {
           email: user.email,
           objectId: id,
           return_date,
@@ -135,13 +101,17 @@ const BookDetails = () => {
         })
         .then((res) => {
           if (!res.data.insertedId) {
-            toast.error("You already Borrowed");
+            console.log(res.data);
+            return toast.error("You already Borrowed");
           }
           if (res.data.insertedId) {
-            axiosSecure
-              .put(`/books/${id}`, {
-                book_quantity: newQuantity,
-              })
+            axios
+              .put(
+                `https://assignment-11-novel-nexus-server.vercel.app/books/${id}`,
+                {
+                  book_quantity: newQuantity,
+                }
+              )
               .then((response) => {
                 console.log(response.data);
                 if (response.data.modifiedCount > 0) {

@@ -1,31 +1,38 @@
 import Container from "./Container";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useContext } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
+import useAuth from "../Hook/useAuth";
 
 const PostReview = () => {
-  const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
     const { review, rating } = data;
 
-    axiosSecure
-      .post("/reviews", {
-        review,
-        rating: parseFloat(rating),
-        name: user.displayName,
-        image: user.photoURL,
-      })
+    axios
+      .post(
+        "https://assignment-11-novel-nexus-server.vercel.app/reviews",
+        {
+          review,
+          rating: parseFloat(rating),
+          name: user.displayName,
+          image: user.photoURL,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
         if (res.data.insertedId) {
-          axiosSecure.get("/reviews").then((res) => {
-            toast.success("Successfully Review Posted");
-            reset();
-            return res.data;
-          });
+          axios
+            .get(
+              "https://assignment-11-novel-nexus-server.vercel.app/reviews",
+              { withCredentials: true }
+            )
+            .then((res) => {
+              toast.success("Successfully Review Posted");
+              reset();
+              return res.data;
+            });
         }
       });
   };

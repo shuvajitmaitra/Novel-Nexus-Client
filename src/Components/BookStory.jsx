@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 // import Container from "./Container";
 import generatePDF from "react-to-pdf";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
 
 const BookStory = () => {
-  const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   const [book, setBook] = useState([]);
   const { book_name, book_summary } = book;
 
   useEffect(() => {
-    axiosSecure.get(`/books/${id}`).then((res) => {
-      setBook(res.data);
-    });
-  }, [id, axiosSecure]);
+    axios
+      .get(`https://assignment-11-novel-nexus-server.vercel.app/books/${id}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setBook(res.data);
+      });
+  }, [id]);
 
   // --------------------------------------------
   // generate pdf

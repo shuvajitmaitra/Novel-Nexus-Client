@@ -2,10 +2,14 @@ import { useForm } from "react-hook-form";
 import Container from "./Container";
 
 import toast from "react-hot-toast";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
+import useAuth from "../Hook/useAuth";
 
 const AddBook = () => {
-  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const userEmail = user.email;
+  console.log(userEmail);
+
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
     const {
@@ -19,24 +23,24 @@ const AddBook = () => {
       bookSummary,
     } = data;
 
-    axiosSecure
-      .post("/books", {
-        book_name: bookName,
-        image: bookImage,
-        book_quantity: bookQuantity,
-        author_name: authorName,
-        category: category,
-        book_rating: bookRating,
-        short_description: sortDescription,
-        book_summary: bookSummary,
-      })
+    axios
+      .post(
+        `https://assignment-11-novel-nexus-server.vercel.app/postBooks?email=${userEmail}`,
+        {
+          book_name: bookName,
+          image: bookImage,
+          book_quantity: bookQuantity,
+          author_name: authorName,
+          category: category,
+          book_rating: bookRating,
+          short_description: sortDescription,
+          book_summary: bookSummary,
+        }
+      )
       .then((res) => {
         if (res.data.insertedId) {
           return toast.success("Book Added Successfully");
         }
-      })
-      .then((error) => {
-        toast.error(error);
       });
   };
 

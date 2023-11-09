@@ -1,18 +1,22 @@
+import axios from "axios";
 import Container from "./Container";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import useAxiosSecure from "../Hook/useAxiosSecure";
 
 const BookRequest = () => {
   const { register, handleSubmit, reset } = useForm();
-  const axiosSecure = useAxiosSecure();
+
   const onSubmit = (data) => {
     const { bookName } = data;
 
-    axiosSecure
-      .post("/book-request", {
-        book_name: bookName,
-      })
+    axios
+      .post(
+        "https://assignment-11-novel-nexus-server.vercel.app/book-request",
+        {
+          book_name: bookName,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
         if (!res.data.insertedId) {
           toast.error("Already in request list");
@@ -27,8 +31,8 @@ const BookRequest = () => {
       });
   };
   return (
-    <Container className="bg-secondary bg-opacity-50 py-10 rounded-lg">
-      <h1 className="text-3xl md:text-5xl py-6 font-bold text-primary text-center space-y-4">
+    <Container className="bg-secondary bg-opacity-50 py-10 rounded-lg h-[60vh] space-y-4 flex justify-center flex-col items-center">
+      <h1 className="text-3xl md:text-5xl py-6 font-bold text-primary text-center ">
         Put your book request
       </h1>
       <form

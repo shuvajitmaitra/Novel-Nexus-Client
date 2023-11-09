@@ -9,7 +9,7 @@ import {
 import { PropTypes } from "prop-types";
 import { auth } from "../Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
 
 //
 
@@ -17,7 +17,6 @@ export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
-  const axiosSecure = useAxiosSecure();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   // create User.........
@@ -43,7 +42,18 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-
+const filterFunc =()=>{
+  axios
+  .get(
+    `https://assignment-11-novel-nexus-server.vercel.app/bookfilter?email=${user.email}`,
+    {
+      withCredentials: true,
+    }
+  )
+  .then((res) => {
+    return res.data;
+  });
+}
   // onAuthStateChanged.......
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -52,14 +62,26 @@ const AuthProvider = ({ children }) => {
       const loggedUser = { email: userEmail };
       if (currentUser) {
         // console.log(loggedUser);
-        axiosSecure
-          .post("/jwt", loggedUser)
+        axios
+          .post(
+            "https://assignment-11-novel-nexus-server.vercel.app/jwt",
+            loggedUser,
+            {
+              withCredentials: true,
+            }
+          )
           .then((res) => {
             console.log(res.data);
           });
       } else {
-        axiosSecure
-          .post("/logout", loggedUser)
+        axios
+          .post(
+            "https://assignment-11-novel-nexus-server.vercel.app/logout",
+            loggedUser,
+            {
+              withCredentials: true,
+            }
+          )
           .then((res) => {
             console.log(res.data);
           });
@@ -70,10 +92,11 @@ const AuthProvider = ({ children }) => {
         return unSubscribe();
       };
     });
-  }, [user, axiosSecure]);
+  }, [user]);
 
   const authInfo = {
     user,
+    filterFunc,
     loading,
     createUser,
     userSignIn,

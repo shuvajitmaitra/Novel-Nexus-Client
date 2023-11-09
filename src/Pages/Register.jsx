@@ -2,18 +2,18 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Container from "../Components/Container";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
-import { useContext, useState } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
 import { auth } from "../Firebase/firebase.config";
 import { updateProfile } from "firebase/auth";
+import useAuth from "../Hook/useAuth";
+import { useState } from "react";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
   const location = useLocation();
   const navigate = useNavigate();
- const [error, setError] = useState('');
-  const { createUser, logOut, googleSignIn } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const { createUser, logOut, googleSignIn } = useAuth();
   const onSubmit = (data) => {
     const regExp =
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&`#^(){}.])[0-9a-zA-Z@$!%*?&`#^(){}.]{6,}$/;
@@ -24,7 +24,6 @@ const Register = () => {
     setError("");
     createUser(data.email, data.password)
       .then(() => {
-      
         updateProfile(auth.currentUser, {
           displayName: data.displayName,
           photoURL: data.photoURL,
@@ -48,16 +47,16 @@ const Register = () => {
       });
   };
 
-  const handleGoogleLogin = ()=>{
+  const handleGoogleLogin = () => {
     googleSignIn()
-    .then(()=>{
-      toast.success("Sign In Successfully")
-      navigate(location.state ? location.state : "/");
-    })
-    .catch((error)=>{
-      toast.error(error.message)
-  })
-  }
+      .then(() => {
+        toast.success("Sign In Successfully");
+        navigate(location.state ? location.state : "/");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   return (
     <Container className="py-10">
       <h3 className="text-3xl md:text-6xl py-6 font-bold text-primary text-center">
@@ -144,7 +143,10 @@ const Register = () => {
           <span className="px-2 text-xl font-bold text-secondary">OR</span>
           <span className=" flex-1 border-t-2 border-accent"></span>
         </div>
-        <div onClick={handleGoogleLogin} className="flex items-center btn text-white btn-primary">
+        <div
+          onClick={handleGoogleLogin}
+          className="flex items-center btn text-white btn-primary"
+        >
           <FcGoogle className="text-4xl " /> Sign In with Google
         </div>
       </form>

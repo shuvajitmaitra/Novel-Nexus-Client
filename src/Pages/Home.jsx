@@ -6,10 +6,9 @@ import Footer from "./Footer";
 import CustomerReviews from "../Components/CustomerReviews";
 import BookRequest from "../Components/BookRequest";
 import PostReview from "../Components/PostReview";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
 
 const Home = () => {
-  const axiosSecure = useAxiosSecure();
   const {
     data: categories,
     isLoading,
@@ -17,9 +16,13 @@ const Home = () => {
   } = useQuery({
     queryKey: ["categories"],
     queryFn: async () =>
-      await axiosSecure.get("/category").then((res) => {
-        return res.data;
-      }),
+      await axios
+        .get("https://assignment-11-novel-nexus-server.vercel.app/category", {
+          withCredentials: true,
+        })
+        .then((res) => {
+          return res.data;
+        }),
   });
   if (isLoading) {
     return (

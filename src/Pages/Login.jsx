@@ -2,37 +2,38 @@ import { Link, useNavigate } from "react-router-dom";
 import Container from "../Components/Container";
 import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
 import toast from "react-hot-toast";
+import axios from "axios";
+import useAuth from "../Hook/useAuth";
 
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
-  const {userSignIn,googleSignIn} = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { userSignIn, googleSignIn } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     userSignIn(data.email, data.password)
-    .then(()=>{
-        toast.success("Sign In Successfully")
-       reset()
+      .then(() => {
+        axios.post("https://assignment-11-novel-nexus-server.vercel.app/user");
+        toast.success("Sign In Successfully");
+        reset();
         navigate(location.state ? location.state : "/");
-    })
-    .catch(()=>{
-        toast.error("Invalid Email/Password")
-    })
+      })
+      .catch(() => {
+        toast.error("Invalid Email/Password");
+      });
   };
 
-  const handleGoogleLogin = ()=>{
+  const handleGoogleLogin = () => {
     googleSignIn()
-    .then(()=>{
-      toast.success("Sign In Successfully")
-      navigate(location.state ? location.state : "/");
-    })
-    .catch(()=>{
-      toast.error("Invalid Email/Password")
-  })
-  }
+      .then(() => {
+        toast.success("Sign In Successfully");
+        navigate(location.state ? location.state : "/");
+      })
+      .catch(() => {
+        toast.error("Invalid Email/Password");
+      });
+  };
   return (
     <Container className="py-10 ">
       <h3 className="text-3xl md:text-6xl py-6 font-bold text-primary text-center">
@@ -63,13 +64,18 @@ const Login = () => {
             type="password"
             name="password"
             placeholder="password"
-          {...register("password")}
+            {...register("password")}
             className="input input-bordered"
             required
           />
         </div>
         <div className="form-control mt-6">
-          <button  type="submit" className="btn btn-primary">Login</button>
+          <button
+            type="submit"
+            className="btn btn-primary"
+          >
+            Login
+          </button>
         </div>
         <div className="font-medium">
           <h3>
@@ -87,7 +93,10 @@ const Login = () => {
           <span className="px-2 text-xl font-bold text-secondary">OR</span>
           <span className=" flex-1 border-t-2 border-accent"></span>
         </div>
-        <div onClick={handleGoogleLogin} className="flex items-center btn text-white btn-primary">
+        <div
+          onClick={handleGoogleLogin}
+          className="flex items-center btn text-white btn-primary"
+        >
           <FcGoogle className="text-4xl " /> Sign In with Google
         </div>
       </form>

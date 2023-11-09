@@ -6,10 +6,9 @@ import { SwiperNavButtons } from "./SwiperNavButtons";
 import { useQuery } from "@tanstack/react-query";
 
 import StarRating from "./StarRating";
-import useAxiosSecure from "../Hook/useAxiosSecure";
+import axios from "axios";
 
 const CustomerReviews = () => {
-  const axiosSecure = useAxiosSecure();
   const {
     data: reviews,
     isLoading,
@@ -17,9 +16,11 @@ const CustomerReviews = () => {
   } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () =>
-      await axiosSecure.get("/reviews").then((res) => {
-        return res.data;
-      }),
+      await axios
+        .get("https://assignment-11-novel-nexus-server.vercel.app/reviews")
+        .then((res) => {
+          return res.data;
+        }),
   });
 
   if (isLoading) {
