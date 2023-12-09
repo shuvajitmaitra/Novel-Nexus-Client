@@ -11,7 +11,7 @@ import CategoriseBooks from "../Components/CategoriseBooks";
 import BookDetails from "../Components/BookDetails";
 import BookStory from "../Components/BookStory";
 import UpdateForm from "../Components/UpdateForm";
-import ErrorPage from "../Pages/ErrorPage";
+// import ErrorPage from "../Pages/ErrorPage";
 import PostReview from "../Components/PostReview";
 import BookRequest from "../Components/BookRequest";
 import AdminRoutes from "./AdminRoutes";
@@ -20,7 +20,7 @@ const Routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
-    errorElement: <ErrorPage></ErrorPage>,
+    // errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -48,7 +48,8 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/categorized-book/:book_category",
-        element: <PrivateRoute><CategoriseBooks></CategoriseBooks></PrivateRoute>,
+        // element: <PrivateRoute><CategoriseBooks></CategoriseBooks></PrivateRoute>,
+        element: <CategoriseBooks></CategoriseBooks>,
       },
       {
         path: "/bookDetails/:id",

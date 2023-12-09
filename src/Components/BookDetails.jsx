@@ -87,7 +87,7 @@ const BookDetails = () => {
 
       axios
         .post("https://assignment-11-novel-nexus-server.vercel.app/borrowed", {
-          email: user.email,
+          email: user?.email,
           objectId: id,
           return_date,
           borrowed_date,
@@ -244,7 +244,7 @@ const BookDetails = () => {
                     type="email"
                     name="email"
                     placeholder="email"
-                    defaultValue={user.email}
+                    defaultValue={user?.email}
                     className="input input-bordered"
                     required
                   />

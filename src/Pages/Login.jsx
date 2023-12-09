@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    userSignIn(data.email, data.password)
+    userSignIn(data?.email, data.password)
       .then(() => {
         axios.post("https://assignment-11-novel-nexus-server.vercel.app/user");
         toast.success("Sign In Successfully");

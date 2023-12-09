@@ -6,6 +6,7 @@ import Routes from "./Routes/Routes";
 import AuthProvider from "./Provider/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import Modal from 'react-modal';
+Modal.setAppElement('#root');
 
 import {
   
@@ -17,7 +18,6 @@ import {
 // Create a client
 const queryClient = new QueryClient()
 
-Modal.setAppElement('#root');
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(

@@ -22,21 +22,26 @@ const Register = () => {
       return setError("Invalid password");
     }
     setError("");
-    createUser(data.email, data.password)
+    createUser(data?.email, data.password)
       .then(() => {
         updateProfile(auth.currentUser, {
           displayName: data.displayName,
           photoURL: data.photoURL,
         })
-          .then(() => {
+          .then((res) => {
+          if(res.user.displayName){
             logOut(auth)
-              .then(() => {
-                navigate("/login");
-                toast.success("User Created Successfully");
-              })
-              .catch((error) => {
-                toast.error(error.message);
-              });
+            .then(() => {
+              navigate("/login");
+              toast.success("User Created Successfully");
+            })
+            .catch((error) => {
+              toast.error(error.message);
+            });
+          }
+          else{
+            console.log("profile cannot be updated");
+          }
           })
           .catch((error) => {
             toast.error(error.message);

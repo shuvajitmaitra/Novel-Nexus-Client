@@ -17,6 +17,7 @@ const CategoriseBooks = () => {
         }
       )
       .then((res) => {
+        console.log(1234);
         setBooks(res.data);
       });
   }, [book_category]);
@@ -36,7 +37,7 @@ const CategoriseBooks = () => {
               alt={book.book_name}
               className="block right-0 left-0 mx-auto w-64 h-72 object-cover rounded-lg"
             />
-            {book.book_quantity < 1 && (
+            {book?.book_quantity < 1 && (
               <span className="absolute top-5 left-3 bg-red-500 px-2 mx-3 my-4 text-white text-lg rounded-sm">
                 {" "}
                 Not Available

@@ -13,7 +13,7 @@ const BorrowedBook = () => {
     queryFn: async () =>
       await axios
         .get(
-          `https://assignment-11-novel-nexus-server.vercel.app/borrowed/${user.email}`,
+          `https://assignment-11-novel-nexus-server.vercel.app/borrowed/${user?.email}`,
           {
             withCredentials: true,
           }

@@ -1,6 +1,6 @@
 import Container from "./Container";
 import toast from "react-hot-toast";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../Hook/useAuth";
@@ -11,7 +11,7 @@ const UpdateForm = () => {
   const [books, setBooks] = useState({});
 
   const { filterFunc } = useAuth();
-  // const userEmail = user.email
+  // const userEmail = user?.email
   //   form er default value er jonno data load hosche............
   useEffect(() => {
     axios
@@ -34,9 +34,9 @@ const UpdateForm = () => {
     const sortDescription = e.target.sortDescription.value;
     const bookRating = e.target.bookRating.value;
     const bookSummary = e.target.bookSummary.value;
-if(category == "Choose a category"){
-  return toast.error('Please select a category')
-}
+    if (category == "Choose a category") {
+      return toast.error("Please select a category");
+    }
     axios
       .put(
         `https://assignment-11-novel-nexus-server.vercel.app/update-books/${id}`,
@@ -151,9 +151,8 @@ if(category == "Choose a category"){
               <option
                 selected
                 disabled
-                
               >
-               Choose a category
+                Choose a category
               </option>
               <option value="History">History</option>
               <option value="Drama">Drama</option>

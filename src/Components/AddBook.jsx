@@ -7,7 +7,7 @@ import useAuth from "../Hook/useAuth";
 
 const AddBook = () => {
   const { user } = useAuth();
-  const userEmail = user.email;
+  const userEmail = user?.email;
   console.log(userEmail);
 
   const { register, handleSubmit } = useForm();

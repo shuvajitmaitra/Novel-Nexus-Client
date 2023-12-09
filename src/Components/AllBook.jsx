@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 
 const AllBook = () => {
   const { user, filterFunc } = useAuth();
-  const userEmail = user.email;
+  const userEmail = user?.email;
 
   const [books, setBooks] = useState(null);
 

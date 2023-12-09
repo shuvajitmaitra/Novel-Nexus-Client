@@ -42,18 +42,18 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-const filterFunc =()=>{
-  axios
-  .get(
-    `https://assignment-11-novel-nexus-server.vercel.app/bookfilter?email=${user.email}`,
-    {
-      withCredentials: true,
-    }
-  )
-  .then((res) => {
-    return res.data;
-  });
-}
+  const filterFunc = () => {
+    axios
+      .get(
+        `https://assignment-11-novel-nexus-server.vercel.app/bookfilter?email=${user?.email}`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        return res.data;
+      });
+  };
   // onAuthStateChanged.......
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
