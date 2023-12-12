@@ -52,7 +52,7 @@ const SliderBanner = () => {
           <SwiperSlide key={slider._id}>
             <img
               src={slider.image}
-              className="h-[80vh] rounded-lg w-full object-cover"
+              className="max-h-[600px] rounded-lg w-full object-cover"
             />
           </SwiperSlide>
         ))}

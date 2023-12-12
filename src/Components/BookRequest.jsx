@@ -31,7 +31,7 @@ const BookRequest = () => {
       });
   };
   return (
-    <Container className="bg-secondary bg-opacity-50 py-10 rounded-lg h-[60vh] space-y-4 flex justify-center flex-col items-center">
+    <Container className="bg-secondary bg-opacity-50 py-10 rounded-lg h-[60vh] lg:h-[500px] space-y-4 flex justify-center flex-col items-center">
       <h1 className="text-3xl md:text-5xl py-6 font-bold text-primary text-center ">
         Put your book request
       </h1>

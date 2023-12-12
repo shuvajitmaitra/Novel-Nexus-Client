@@ -50,7 +50,7 @@ const CustomerReviews = () => {
       >
         {reviews?.map((review) => (
           <SwiperSlide key={review._id}>
-            <div className="h-[50vh] flex flex-col items-center justify-center space-y-4 ">
+            <div className="h-[50vh] lg:h-[500px] flex flex-col items-center justify-center space-y-4 ">
               <img
                 src={review.image}
                 className="rounded-full border-4 border-white w-24 h-24 object-cover"
