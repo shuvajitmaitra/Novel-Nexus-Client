@@ -7,6 +7,7 @@ import CustomerReviews from "../Components/CustomerReviews";
 import BookRequest from "../Components/BookRequest";
 import PostReview from "../Components/PostReview";
 import axios from "axios";
+import FAQSection from "../Components/FAQSection";
 
 const Home = () => {
   const {
@@ -81,7 +82,7 @@ const Home = () => {
 
       <BookRequest></BookRequest>
       <PostReview></PostReview>
-
+          <FAQSection/>
       <Footer></Footer>
     </div>
   );
